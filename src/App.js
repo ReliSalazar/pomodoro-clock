@@ -12,7 +12,8 @@ class Clock extends React.Component {
       breakLenght: 5,
       sessionLenght: 25,
       startStop: 'start',
-      running: false
+      running: false,
+      pause: false
     }
     this.handleBreakIncrement = this.handleBreakIncrement.bind(this)
     this.handleBreakDecrement = this.handleBreakDecrement.bind(this)
@@ -20,41 +21,52 @@ class Clock extends React.Component {
     this.handleSessionDecrement = this.handleSessionDecrement.bind(this)
     this.handleReset = this.handleReset.bind(this)
     this.handleStartStop = this.handleStartStop.bind(this)
+    this.audio = React.createRef()
   }
 
   handleBreakIncrement () {
-    let val = this.state.breakLenght
-    if (val !== 60) {
-      this.setState({
-        breakLenght: (val += 1)
-      })
+    if (!this.state.running) {
+      let val = this.state.breakLenght
+      if (val !== 60) {
+        this.setState({
+          breakLenght: (val += 1)
+        })
+      }
     }
   }
 
   handleBreakDecrement () {
-    let val = this.state.breakLenght
-    if (val !== 1) {
-      this.setState({
-        breakLenght: (val -= 1)
-      })
+    if (!this.state.running) {
+      let val = this.state.breakLenght
+      if (val !== 1) {
+        this.setState({
+          breakLenght: (val -= 1)
+        })
+      }
     }
   }
 
   handleSessionIncrement () {
-    let val = this.state.sessionLenght
-    if (val !== 60) {
-      this.setState({
-        sessionLenght: (val += 1)
-      })
+    if (!this.state.running) {
+      let val = this.state.sessionLenght
+      if (val !== 60) {
+        this.setState({
+          sessionLenght: (val += 1),
+          mm: val
+        })
+      }
     }
   }
 
   handleSessionDecrement () {
-    let val = this.state.sessionLenght
-    if (val !== 1) {
-      this.setState({
-        sessionLenght: (val -= 1)
-      })
+    if (!this.state.running) {
+      let val = this.state.sessionLenght
+      if (val !== 1) {
+        this.setState({
+          sessionLenght: (val -= 1),
+          mm: val
+        })
+      }
     }
   }
 
@@ -68,31 +80,58 @@ class Clock extends React.Component {
       startStop: 'start',
       running: false
     })
+    this.audio.current.pause()
+    this.audio.current.currentTime = 0
   }
 
   handleStartStop () {
     let { running } = this.state
     running = !running
     this.setState({
-      mm: this.state.sessionLenght,
       startStop: running ? 'stop' : 'start',
       running: running
     })
-
-    /*
-    * bucle externo que corra desde el arranque
-    * el bucle debe evaluar si está corriendo o no (running)
-      * si no corre, no pasa nada
-      * si corre, evalúa si los segundos son 0
-        * si los segundos no son cero, los reduce en 1
-        * si los segundos son cero, evalúa si los minutos son cero
-          * si los minutos no son cero, los reduce en 1 y pone los segundos en 59
-          * si los minutos son cero cambia a break o session dependiendo en cual esté
-            * recetea tanto los minutos como los segundos y empieza de nuevo
-    */
+    // the first time set all as default, that helps to switch inside of the interval
+    if (!this.state.running) {
+      this.setState({
+        pause: true
+      })
+    }
+    if (!this.state.pause) {
+      this.setState({
+        timerLabel: 'session',
+        mm: this.state.sessionLenght,
+        ss: 0
+      })
+    }
 
     const timer = () => {
-      clearInterval(interval)
+      let { mm, ss } = this.state
+      if (this.state.running) {
+        if (!(this.state.ss === 0)) {
+          this.setState({
+            ss: (ss -= 1)
+          })
+        } else if (!(this.state.mm === 0)) {
+          this.setState({
+            mm: (mm -= 1),
+            ss: 59
+          })
+        } else {
+          this.audio.current.play()
+          this.setState({
+            timerLabel:
+              this.state.timerLabel === 'session' ? 'break' : 'session',
+            mm:
+              this.state.timerLabel === 'session'
+                ? this.state.breakLenght
+                : this.state.sessionLenght,
+            ss: 0
+          })
+        }
+      } else {
+        clearInterval(interval)
+      }
     }
 
     const interval = setInterval(timer, 1000)
@@ -107,16 +146,13 @@ class Clock extends React.Component {
       sessionLenght,
       startStop
     } = this.state
-    const audioSRC =
-      'https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav'
-    console.log(audioSRC)
 
     return (
       <div className='clock'>
         <div className='time-left'>
           <div id='timer-label'>{timerLabel}</div>
           <div id='time-left'>
-            {mm}:{ss >= 10 ? ss : '0' + ss}
+            {mm >= 10 ? mm : '0' + mm}:{ss >= 10 ? ss : '0' + ss}
           </div>
         </div>
 
@@ -176,6 +212,11 @@ class Clock extends React.Component {
             reset
           </button>
         </div>
+        <audio
+          id='beep'
+          ref={this.audio}
+          src='https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav'
+        />
       </div>
     )
   }
