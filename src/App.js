@@ -93,8 +93,11 @@ class Clock extends React.Component {
     })
     // the first time set all as default, that helps to switch inside of the interval
     if (!this.state.running) {
+      let { mm, ss } = this.state
       this.setState({
-        pause: true
+        pause: true,
+        mm: mm,
+        ss: ss
       })
     }
     if (!this.state.pause) {
@@ -110,11 +113,11 @@ class Clock extends React.Component {
       if (this.state.running) {
         if (!(this.state.ss === 0)) {
           this.setState({
-            ss: (ss -= 1)
+            ss: (ss - 1)
           })
         } else if (!(this.state.mm === 0)) {
           this.setState({
-            mm: (mm -= 1),
+            mm: (mm - 1),
             ss: 59
           })
         } else {
