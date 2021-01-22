@@ -6,11 +6,11 @@ class Clock extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      mm: 25,
+      mm: 50,
       ss: 0,
       timerLabel: 'session',
-      breakLenght: 5,
-      sessionLenght: 25,
+      breakLenght: 10,
+      sessionLenght: 50,
       startStop: 'start',
       running: false,
       pause: false
@@ -72,11 +72,11 @@ class Clock extends React.Component {
 
   handleReset () {
     this.setState({
-      mm: 25,
+      mm: 50,
       ss: 0,
       timerLabel: 'session',
-      breakLenght: 5,
-      sessionLenght: 25,
+      breakLenght: 10,
+      sessionLenght: 50,
       startStop: 'start',
       running: false
     })
