@@ -1,233 +1,305 @@
-import React from 'react'
-import './font-awesome-4.7.0/css/font-awesome.min.css'
-import './App.css'
+import React from "react";
+import "./font-awesome-4.7.0/css/font-awesome.min.css";
+import "./App.css";
 
 class Clock extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       mm: 50,
       ss: 0,
-      timerLabel: 'session',
+      timerLabel: "session",
       breakLenght: 10,
       sessionLenght: 50,
-      startStop: 'start',
+      startStop: "start",
       running: false,
-      pause: false
-    }
-    this.handleBreakIncrement = this.handleBreakIncrement.bind(this)
-    this.handleBreakDecrement = this.handleBreakDecrement.bind(this)
-    this.handleSessionIncrement = this.handleSessionIncrement.bind(this)
-    this.handleSessionDecrement = this.handleSessionDecrement.bind(this)
-    this.handleReset = this.handleReset.bind(this)
-    this.handleStartStop = this.handleStartStop.bind(this)
-    this.audio = React.createRef()
+      pause: false,
+    };
+    this.handleBreakIncrement = this.handleBreakIncrement.bind(this);
+    this.handleBreakDecrement = this.handleBreakDecrement.bind(this);
+    this.handleSessionIncrement = this.handleSessionIncrement.bind(this);
+    this.handleSessionDecrement = this.handleSessionDecrement.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+    this.handleStartStop = this.handleStartStop.bind(this);
+    this.handleTimePresset = this.handleTimePresset.bind(this);
+    this.audio = React.createRef();
   }
 
-  handleBreakIncrement () {
+  handleBreakIncrement() {
     if (!this.state.running) {
-      let val = this.state.breakLenght
+      let val = this.state.breakLenght;
       if (val !== 60) {
         this.setState({
-          breakLenght: (val += 1)
-        })
+          breakLenght: (val += 1),
+        });
       }
     }
   }
 
-  handleBreakDecrement () {
+  handleBreakDecrement() {
     if (!this.state.running) {
-      let val = this.state.breakLenght
+      let val = this.state.breakLenght;
       if (val !== 1) {
         this.setState({
-          breakLenght: (val -= 1)
-        })
+          breakLenght: (val -= 1),
+        });
       }
     }
   }
 
-  handleSessionIncrement () {
+  handleSessionIncrement() {
     if (!this.state.running) {
-      let val = this.state.sessionLenght
+      let val = this.state.sessionLenght;
       if (val !== 60) {
         this.setState({
           sessionLenght: (val += 1),
-          mm: val
-        })
+          mm: val,
+        });
       }
     }
   }
 
-  handleSessionDecrement () {
+  handleSessionDecrement() {
     if (!this.state.running) {
-      let val = this.state.sessionLenght
+      let val = this.state.sessionLenght;
       if (val !== 1) {
         this.setState({
           sessionLenght: (val -= 1),
-          mm: val
-        })
+          mm: val,
+        });
       }
     }
   }
 
-  handleReset () {
+  handleReset() {
     this.setState({
       mm: 50,
       ss: 0,
-      timerLabel: 'session',
+      timerLabel: "session",
       breakLenght: 10,
       sessionLenght: 50,
-      startStop: 'start',
-      running: false
-    })
-    this.audio.current.pause()
-    this.audio.current.currentTime = 0
+      startStop: "start",
+      running: false,
+    });
+    this.audio.current.pause();
+    this.audio.current.currentTime = 0;
   }
 
-  handleStartStop () {
-    let { running } = this.state
-    running = !running
+  handleStartStop() {
+    let { running } = this.state;
+    running = !running;
     this.setState({
-      startStop: running ? 'stop' : 'start',
-      running: running
-    })
+      startStop: running ? "stop" : "start",
+      running: running,
+    });
     // the first time set all as default, that helps to switch inside of the interval
     if (!this.state.running) {
       this.setState({
-        pause: true
-      })
+        pause: true,
+      });
     }
     if (!this.state.pause) {
       this.setState({
-        timerLabel: 'session',
+        timerLabel: "session",
         mm: this.state.sessionLenght,
-        ss: 0
-      })
+        ss: 0,
+      });
     }
 
     const timer = () => {
-      let { mm, ss } = this.state
+      let { mm, ss } = this.state;
       if (this.state.running) {
         if (!(this.state.ss === 0)) {
           this.setState({
-            ss: (ss - 1)
-          })
+            ss: ss - 1,
+          });
         } else if (!(this.state.mm === 0)) {
           this.setState({
-            mm: (mm - 1),
-            ss: 59
-          })
+            mm: mm - 1,
+            ss: 59,
+          });
         } else {
-          this.audio.current.play()
+          this.audio.current.play();
           this.setState({
             timerLabel:
-              this.state.timerLabel === 'session' ? 'break' : 'session',
+              this.state.timerLabel === "session" ? "break" : "session",
             mm:
-              this.state.timerLabel === 'session'
+              this.state.timerLabel === "session"
                 ? this.state.breakLenght
                 : this.state.sessionLenght,
-            ss: 0
-          })
+            ss: 0,
+          });
         }
       } else {
-        clearInterval(interval)
+        clearInterval(interval);
       }
-    }
+    };
 
-    const interval = setInterval(timer, 1000)
+    const interval = setInterval(timer, 1000);
   }
 
-  render () {
+  handleTimePresset(presset) {
+    if (!this.state.running) {
+      switch (presset) {
+        case 1:
+          this.setState({
+            mm: 1,
+            ss: 0,
+            timerLabel: "session",
+            breakLenght: 1,
+            sessionLenght: 1,
+            startStop: "start",
+            running: false,
+          });
+          this.audio.current.pause();
+          this.audio.current.currentTime = 0;
+          break;
+        case 2:
+          this.setState({
+            mm: 25,
+            ss: 0,
+            timerLabel: "session",
+            breakLenght: 5,
+            sessionLenght: 25,
+            startStop: "start",
+            running: false,
+          });
+          this.audio.current.pause();
+          this.audio.current.currentTime = 0;
+          break;
+        case 3:
+          this.setState({
+            mm: 60,
+            ss: 0,
+            timerLabel: "session",
+            breakLenght: 10,
+            sessionLenght: 60,
+            startStop: "start",
+            running: false,
+          });
+          this.audio.current.pause();
+          this.audio.current.currentTime = 0;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  render() {
     const {
       mm,
       ss,
       timerLabel,
       breakLenght,
       sessionLenght,
-      startStop
-    } = this.state
+      startStop,
+    } = this.state;
 
     return (
-      <div className='clock'>
-        <div className='time-left'>
-          <div id='timer-label'>{timerLabel}</div>
-          <div id='time-left'>
-            {mm >= 10 ? mm : '0' + mm}:{ss >= 10 ? ss : '0' + ss}
+      <div className="clock">
+        <div className="time-left">
+          <div id="timer-label">{timerLabel}</div>
+          <div id="time-left">
+            {mm >= 10 ? mm : "0" + mm}:{ss >= 10 ? ss : "0" + ss}
           </div>
         </div>
 
-        <div className='length-box'>
-          <div className='break-box'>
-            <div id='break-label'>Break Length</div>
-            <div id='break-length'>{breakLenght}</div>
-            <div className='buttons'>
+        <div className="length-box">
+          <div className="break-box">
+            <div id="break-label">Break Length</div>
+            <div id="break-length">{breakLenght}</div>
+            <div className="buttons">
               <button
-                className='add'
-                id='break-increment'
+                className="add"
+                id="break-increment"
                 onClick={this.handleBreakIncrement}
               >
-                <i className='fa fa-arrow-up' />
+                <i className="fa fa-arrow-up" />
               </button>
               <button
-                className='subtract'
-                id='break-decrement'
+                className="subtract"
+                id="break-decrement"
                 onClick={this.handleBreakDecrement}
               >
-                <i className='fa fa-arrow-down' />
+                <i className="fa fa-arrow-down" />
               </button>
             </div>
           </div>
 
-          <div className='session-box'>
-            <div id='session-label'>Session Length</div>
-            <div id='session-length'>{sessionLenght}</div>
-            <div className='buttons'>
+          <div className="session-box">
+            <div id="session-label">Session Length</div>
+            <div id="session-length">{sessionLenght}</div>
+            <div className="buttons">
               <button
-                className='add'
-                id='session-increment'
+                className="add"
+                id="session-increment"
                 onClick={this.handleSessionIncrement}
               >
-                <i className='fa fa-arrow-up' />
+                <i className="fa fa-arrow-up" />
               </button>
               <button
-                className='subtract'
-                id='session-decrement'
+                className="subtract"
+                id="session-decrement"
                 onClick={this.handleSessionDecrement}
               >
-                <i className='fa fa-arrow-down' />
+                <i className="fa fa-arrow-down" />
               </button>
             </div>
           </div>
         </div>
 
-        <div className='buttons-box'>
+        <div className="buttons-box">
           <button
-            className='play_stop'
-            id='start_stop'
+            className="play_stop"
+            id="start_stop"
             onClick={this.handleStartStop}
           >
             {startStop}
           </button>
-          <button className='reset' id='reset' onClick={this.handleReset}>
+          <button className="reset" id="reset" onClick={this.handleReset}>
             reset
           </button>
         </div>
+
+        <div className="buttons-box">
+          <button
+            className="time_preset"
+            onClick={() => this.handleTimePresset(1)}
+          >
+            1:1
+          </button>
+
+          <button
+            className="time_preset"
+            onClick={() => this.handleTimePresset(2)}
+          >
+            5:25
+          </button>
+
+          <button
+            className="time_preset"
+            onClick={() => this.handleTimePresset(3)}
+          >
+            10:60
+          </button>
+        </div>
         <audio
-          id='beep'
+          id="beep"
           ref={this.audio}
-          src='https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav'
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
         />
       </div>
-    )
+    );
   }
 }
 
-function App () {
+function App() {
   return (
     <div>
       <Clock />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

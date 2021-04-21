@@ -4,8 +4,16 @@
   box-sizing: border-box;
 }
 
+:root {
+  --dark: #2d2d2d;
+  --darker: #222;
+  --blue: #00acc1;
+  --red: #de3c4b;
+  --purple: #81559B;
+}
+
 body {
-  background-color: #222;
+  background-color: var(--dark);
   font-family: 'Space Mono', 'Courier New', Courier, monospace;
   margin: 0;
   min-height: 100vh;
@@ -15,7 +23,7 @@ body {
 }
 
 .clock {
-  background-color: #2d2d2d;
+  background-color: var(--darker);
   color: #fff;
   font-size: 20px;
   padding: 20px;
@@ -54,7 +62,7 @@ body {
 button {
   background-color: #fff;
   border: 1px solid #fff;
-  color: #2d2d2d;
+  color: var(--dark);
   font-size: 20px;
   border: none;
   margin: 15px;
@@ -79,21 +87,32 @@ button > i {
 }
 
 .play_stop {
-  background-color: #088;
-  border: 1px solid #088;
+  background-color: var(--blue);
+  border: 1px solid var(--blue);
   color: #fff;
   width: 100px;
 }
 .play_stop:active {
-  border: 1px solid #088;
+  border: 1px solid var(--blue);
 }
 
 .reset {
-  background-color: #eb4d4b;
-  border: 1px solid #eb4d4b;
+  background-color: var(--red);
+  border: 1px solid var(--red);
   color: #fff;
   width: 100px;
 }
 .reset:active {
-  border: 1px solid #eb4d4b;
+  border: 1px solid var(--red);
+}
+
+.time_preset {
+  background-color: var(--purple);
+  border: 1px solid var(--purple);
+  color: #fff;
+  width: 100px;
+}
+
+.time_preset:active {
+  border: 1px solid var(--purple);
 }
