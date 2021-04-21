@@ -140,6 +140,11 @@ class Clock extends React.Component {
 
   handleTimePreset(newBreakLenght, newSessionLenght) {
     if (!this.state.running) {
+      newBreakLenght = newBreakLenght > 60 ? 60 : newBreakLenght;
+      newBreakLenght = newBreakLenght < 1 ? 1 : newBreakLenght;
+      newSessionLenght = newSessionLenght > 60 ? 60 : newSessionLenght;
+      newSessionLenght = newSessionLenght < 1 ? 1 : newSessionLenght;
+
       this.setState({
         mm: newSessionLenght,
         ss: 0,
