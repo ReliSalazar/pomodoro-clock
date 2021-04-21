@@ -21,7 +21,7 @@ class Clock extends React.Component {
     this.handleSessionDecrement = this.handleSessionDecrement.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleStartStop = this.handleStartStop.bind(this);
-    this.handleTimePresset = this.handleTimePresset.bind(this);
+    this.handleTimePreset = this.handleTimePreset.bind(this);
     this.audio = React.createRef();
   }
 
@@ -138,51 +138,19 @@ class Clock extends React.Component {
     const interval = setInterval(timer, 1000);
   }
 
-  handleTimePresset(presset) {
+  handleTimePreset(newBreakLenght, newSessionLenght) {
     if (!this.state.running) {
-      switch (presset) {
-        case 1:
-          this.setState({
-            mm: 1,
-            ss: 0,
-            timerLabel: "session",
-            breakLenght: 1,
-            sessionLenght: 1,
-            startStop: "start",
-            running: false,
-          });
-          this.audio.current.pause();
-          this.audio.current.currentTime = 0;
-          break;
-        case 2:
-          this.setState({
-            mm: 25,
-            ss: 0,
-            timerLabel: "session",
-            breakLenght: 5,
-            sessionLenght: 25,
-            startStop: "start",
-            running: false,
-          });
-          this.audio.current.pause();
-          this.audio.current.currentTime = 0;
-          break;
-        case 3:
-          this.setState({
-            mm: 60,
-            ss: 0,
-            timerLabel: "session",
-            breakLenght: 10,
-            sessionLenght: 60,
-            startStop: "start",
-            running: false,
-          });
-          this.audio.current.pause();
-          this.audio.current.currentTime = 0;
-          break;
-        default:
-          break;
-      }
+      this.setState({
+        mm: newSessionLenght,
+        ss: 0,
+        timerLabel: "session",
+        breakLenght: newBreakLenght,
+        sessionLenght: newSessionLenght,
+        startStop: "start",
+        running: false,
+      });
+      this.audio.current.pause();
+      this.audio.current.currentTime = 0;
     }
   }
 
@@ -265,21 +233,21 @@ class Clock extends React.Component {
         <div className="buttons-box">
           <button
             className="time_preset"
-            onClick={() => this.handleTimePresset(1)}
+            onClick={() => this.handleTimePreset(1, 1)}
           >
             1:1
           </button>
 
           <button
             className="time_preset"
-            onClick={() => this.handleTimePresset(2)}
+            onClick={() => this.handleTimePreset(5, 25)}
           >
             5:25
           </button>
 
           <button
             className="time_preset"
-            onClick={() => this.handleTimePresset(3)}
+            onClick={() => this.handleTimePreset(10, 60)}
           >
             10:60
           </button>
