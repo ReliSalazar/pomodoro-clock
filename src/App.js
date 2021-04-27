@@ -154,6 +154,7 @@ class Clock extends React.Component {
       sessionLenght: newSessionLenght,
       startStop: "start",
       running: false,
+      runClass: "blue_button",
     });
     this.audio.current.pause();
     this.audio.current.currentTime = 0;
