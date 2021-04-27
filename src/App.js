@@ -268,7 +268,7 @@ class Clock extends React.Component {
 
           <button
             className="time_preset_yellow"
-            onClick={() => this.handleTimePreset(10, 120)}
+            onClick={() => this.handleTimePreset(10, 70)}
           >
             10:120
           </button>
