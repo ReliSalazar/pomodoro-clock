@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
 
 * {
   box-sizing: border-box;
@@ -9,12 +9,13 @@
   --darker: #222;
   --blue: #00acc1;
   --red: #de3c4b;
-  --purple: #81559B;
+  --purple: #81559b;
+  --yellow: #ea9010;
 }
 
 body {
   background-color: var(--dark);
-  font-family: 'Space Mono', 'Courier New', Courier, monospace;
+  font-family: "Space Mono", "Courier New", Courier, monospace;
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -46,7 +47,8 @@ body {
   justify-content: space-between;
 }
 
-.break-box, .session-box {
+.break-box,
+.session-box {
   margin: 20px 50px;
   display: flex;
   flex-direction: column;
@@ -86,29 +88,36 @@ button > i {
   margin: 5px;
 }
 
-.play_stop {
+.blue_button {
   background-color: var(--blue);
   border: 1px solid var(--blue);
   color: #fff;
-  width: 100px;
+  width: 150px;
 }
-.play_stop:active {
+.blue_button:active {
   border: 1px solid var(--blue);
 }
 
-.reset {
+.red_button {
   background-color: var(--red);
   border: 1px solid var(--red);
   color: #fff;
-  width: 100px;
+  width: 150px;
 }
-.reset:active {
+.red_button:active {
   border: 1px solid var(--red);
 }
 
-.time_preset {
+.time_preset_purple {
   background-color: var(--purple);
   border: 1px solid var(--purple);
+  color: #fff;
+  width: 100px;
+}
+
+.time_preset_yellow {
+  background-color: var(--yellow);
+  border: 1px solid var(--yellow);
   color: #fff;
   width: 100px;
 }

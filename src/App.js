@@ -14,6 +14,7 @@ class Clock extends React.Component {
       startStop: "start",
       running: false,
       pause: false,
+      runClass: "blue_button",
     };
     this.handleBreakIncrement = this.handleBreakIncrement.bind(this);
     this.handleBreakDecrement = this.handleBreakDecrement.bind(this);
@@ -28,7 +29,7 @@ class Clock extends React.Component {
   handleBreakIncrement() {
     if (!this.state.running) {
       let val = this.state.breakLenght;
-      if (val !== 60) {
+      if (val !== 120) {
         this.setState({
           breakLenght: (val += 1),
         });
@@ -50,7 +51,7 @@ class Clock extends React.Component {
   handleSessionIncrement() {
     if (!this.state.running) {
       let val = this.state.sessionLenght;
-      if (val !== 60) {
+      if (val !== 120) {
         this.setState({
           sessionLenght: (val += 1),
           mm: val,
@@ -90,6 +91,7 @@ class Clock extends React.Component {
     running = !running;
     this.setState({
       startStop: running ? "stop" : "start",
+      runClass: running ? "red_button" : "blue_button",
       running: running,
     });
     // the first time set all as default, that helps to switch inside of the interval
@@ -139,24 +141,22 @@ class Clock extends React.Component {
   }
 
   handleTimePreset(newBreakLenght, newSessionLenght) {
-    if (!this.state.running) {
-      newBreakLenght = newBreakLenght > 60 ? 60 : newBreakLenght;
-      newBreakLenght = newBreakLenght < 1 ? 1 : newBreakLenght;
-      newSessionLenght = newSessionLenght > 60 ? 60 : newSessionLenght;
-      newSessionLenght = newSessionLenght < 1 ? 1 : newSessionLenght;
+    newBreakLenght = newBreakLenght > 120 ? 120 : newBreakLenght;
+    newBreakLenght = newBreakLenght < 1 ? 1 : newBreakLenght;
+    newSessionLenght = newSessionLenght > 120 ? 120 : newSessionLenght;
+    newSessionLenght = newSessionLenght < 1 ? 1 : newSessionLenght;
 
-      this.setState({
-        mm: newSessionLenght,
-        ss: 0,
-        timerLabel: "session",
-        breakLenght: newBreakLenght,
-        sessionLenght: newSessionLenght,
-        startStop: "start",
-        running: false,
-      });
-      this.audio.current.pause();
-      this.audio.current.currentTime = 0;
-    }
+    this.setState({
+      mm: newSessionLenght,
+      ss: 0,
+      timerLabel: "session",
+      breakLenght: newBreakLenght,
+      sessionLenght: newSessionLenght,
+      startStop: "start",
+      running: false,
+    });
+    this.audio.current.pause();
+    this.audio.current.currentTime = 0;
   }
 
   render() {
@@ -167,6 +167,7 @@ class Clock extends React.Component {
       breakLenght,
       sessionLenght,
       startStop,
+      runClass,
     } = this.state;
 
     return (
@@ -224,37 +225,59 @@ class Clock extends React.Component {
 
         <div className="buttons-box">
           <button
-            className="play_stop"
+            className={runClass}
             id="start_stop"
             onClick={this.handleStartStop}
           >
             {startStop}
           </button>
-          <button className="reset" id="reset" onClick={this.handleReset}>
+          {/* <button className="reset" id="reset" onClick={this.handleReset}>
             reset
-          </button>
+          </button> */}
         </div>
 
         <div className="buttons-box">
           <button
-            className="time_preset"
-            onClick={() => this.handleTimePreset(1, 1)}
+            className="time_preset_purple"
+            onClick={() => this.handleTimePreset(5, 10)}
           >
-            1:1
+            5:10
           </button>
 
           <button
-            className="time_preset"
+            className="time_preset_purple"
             onClick={() => this.handleTimePreset(5, 25)}
           >
             5:25
           </button>
 
           <button
-            className="time_preset"
+            className="time_preset_purple"
+            onClick={() => this.handleTimePreset(10, 50)}
+          >
+            10:50
+          </button>
+        </div>
+        <div className="buttons-box">
+          <button
+            className="time_preset_yellow"
             onClick={() => this.handleTimePreset(10, 60)}
           >
             10:60
+          </button>
+
+          <button
+            className="time_preset_yellow"
+            onClick={() => this.handleTimePreset(10, 120)}
+          >
+            10:120
+          </button>
+
+          <button
+            className="time_preset_yellow"
+            onClick={() => this.handleTimePreset(20, 120)}
+          >
+            20:120
           </button>
         </div>
         <audio
