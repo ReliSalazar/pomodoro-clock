@@ -125,3 +125,25 @@ button > i {
 .time_preset:active {
   border: 1px solid var(--purple);
 }
+
+.links_container {
+  margin-top: 20px;
+  background-color: var(--darker);
+}
+
+.link {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+}
+
+
+.link:hover {
+  background-color: var(--blue);
+  transition: 0.2s;
+}
+
+.link a {
+  color: #fff;
+  text-decoration: none;
+}

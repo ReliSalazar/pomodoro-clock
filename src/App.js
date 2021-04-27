@@ -294,6 +294,27 @@ function App() {
   return (
     <div>
       <Clock />
+      <div className="links_container">
+        <div className="link">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/ReliSalazar/pomodoro-clock"
+          >
+            <i class="fa fa-github"></i> Repository
+          </a>
+        </div>
+
+        <div className="link">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://twitter.com/Reli_Salazar"
+          >
+            <i class="fa fa-twitter"></i> My twitter
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
